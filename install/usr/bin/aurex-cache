@@ -19,9 +19,8 @@
 # 51 Franklin St, Fifth Floor, Boston MA 02110-1301 USA
 # --------
 
-# whoami?
 usage(){
-	echo "$(basename "$0") {get|rm} URL" >&2
+	echo "$(basename "$0") {get|rm|file} URL" >&2
 	exit 1
 }
 
@@ -32,16 +31,17 @@ NETCACHE_DIR="/datos/netcache/aurex-cache"
 REQ_URL="$2"
 REQ_NAME="${REQ_URL##*/}"
 REQ_FILE="$CACHE_DIR/$REQ_NAME"
+if [ ! -r "$REQ_FILE" ] && [ -r "$NETCACHE_DIR/$REQ_NAME" ] ; then
+	REQ_FILE="$NETCACHE_DIR/$REQ_NAME"
+fi
 rc=0
+ACTION="$1"
 
-case "$1" in
+case "$ACTION" in
 	rm)
 		rm -f "$CACHE_DIR/$REQ_NAME"
 		;;
 	get)
-		if [ -r "$NETCACHE_DIR/$REQ_NAME" ] ; then
-			REQ_FILE="$NETCACHE_DIR/$REQ_NAME"
-		fi
 		if [ ! -r "$REQ_FILE" ] ; then
 			# try to download file
 			axel -a -o $CACHE_DIR -n 8 "$REQ_URL" || rc=$?
@@ -51,6 +51,9 @@ case "$1" in
 			echo "Error downloading $REQ_URL" >&2
 			exit 1
 		fi
+		;;
+	file)
+		[ -r "$REQ_FILE" ] || exit 1
 		echo "$REQ_FILE"
 		;;
 	*)
