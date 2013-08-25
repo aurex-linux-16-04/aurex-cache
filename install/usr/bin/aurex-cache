@@ -1,0 +1,60 @@
+#!/bin/sh
+# -------
+# File:        aurex-cache
+# Description: Simple Donwload Manager with support for persistent cache
+# Author:      Luis Antonio Garcia Gisbert <luisgg@gmail.com> 
+# 
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along 
+# with this program; if not, write to the Free Software Foundation, Inc., 
+# 51 Franklin St, Fifth Floor, Boston MA 02110-1301 USA
+# --------
+
+# whoami?
+usage(){
+	echo "$(basename "$0") {get|rm} URL" >&2
+	exit 1
+}
+
+CACHE_DIR="/var/cache/aurex-cache"
+NETCACHE_DIR="/datos/netcache/aurex-cache"
+
+[ "$1" -a "$2" ] || usage
+REQ_URL="$2"
+REQ_NAME="${REQ_URL##*/}"
+REQ_FILE="$CACHE_DIR/$REQ_NAME"
+rc=0
+
+case "$1" in
+	rm)
+		rm -f "$CACHE_DIR/$REQ_NAME"
+		;;
+	get)
+		if [ -r "$NETCACHE_DIR/$REQ_NAME" ] ; then
+			REQ_FILE="$NETCACHE_DIR/$REQ_NAME"
+		fi
+		if [ ! -r "$REQ_FILE" ] ; then
+			# try to download file
+			axel -a -o $CACHE_DIR -n 8 "$REQ_URL" || rc=$?
+		fi
+
+		if [ ! -r "$REQ_FILE" ] ; then
+			echo "Error downloading $REQ_URL" >&2
+			exit 1
+		fi
+		echo "$REQ_FILE"
+		;;
+	*)
+		usage
+		;;
+esac
+exit $rc

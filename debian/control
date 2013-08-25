@@ -1,0 +1,13 @@
+Source: aurex-cache
+Section: admin
+Priority: optional
+Maintainer: Luis Antonio Garcia Gisbert <luisgg@gmail.com>
+Build-Depends: debhelper (>= 7.0)
+Standards-Version: 3.8.4
+
+Package: aurex-cache
+Architecture: all
+Depends: ${misc:Depends}, axel
+Description: aurex download manager
+ Simple download manager based on axel with support for persistent
+ cache
