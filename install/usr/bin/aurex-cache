@@ -20,24 +20,29 @@
 # --------
 
 usage(){
-	echo "$(basename "$0") {get|rm|file} URL" >&2
+	echo "$(basename "$0") {get|rm|file|clean} URL" >&2
 	exit 1
 }
 
 CACHE_DIR="/var/cache/aurex-cache"
 NETCACHE_DIR="/datos/netcache/aurex-cache"
 
-[ "$1" -a "$2" ] || usage
-REQ_URL="$2"
-REQ_NAME="${REQ_URL##*/}"
-REQ_FILE="$CACHE_DIR/$REQ_NAME"
-if [ ! -r "$REQ_FILE" ] && [ -r "$NETCACHE_DIR/$REQ_NAME" ] ; then
-	REQ_FILE="$NETCACHE_DIR/$REQ_NAME"
+if [ "$1" != "clean" ] ; then
+	[ "$1" -a "$2" ] || usage
+	REQ_URL="$2"
+	REQ_NAME="${REQ_URL##*/}"
+	REQ_FILE="$CACHE_DIR/$REQ_NAME"
+	if [ ! -r "$REQ_FILE" ] && [ -r "$NETCACHE_DIR/$REQ_NAME" ] ; then
+		REQ_FILE="$NETCACHE_DIR/$REQ_NAME"
+	fi
 fi
 rc=0
 ACTION="$1"
 
 case "$ACTION" in
+	clean)
+		find "$CACHE_DIR"  -type f -exec echo rm {} \;
+		;;
 	rm)
 		rm -f "$CACHE_DIR/$REQ_NAME"
 		;;
@@ -45,6 +50,8 @@ case "$ACTION" in
 		if [ ! -r "$REQ_FILE" ] ; then
 			# try to download file
 			axel -a -o $CACHE_DIR -n 8 "$REQ_URL" || rc=$?
+		else
+			echo "File already in cache. Nothing to do!"
 		fi
 
 		if [ ! -r "$REQ_FILE" ] ; then
