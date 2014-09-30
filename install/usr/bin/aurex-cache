@@ -31,7 +31,8 @@ if [ "$1" != "clean" ] ; then
 	[ "$1" -a "$2" ] || usage
 	REQ_URL="$2"
 	REQ_NAME="${REQ_URL##*/}"
-	REQ_FILE="$CACHE_DIR/$REQ_NAME"
+	# get filename ... replace %20 with spaces
+	REQ_FILE="$(echo $CACHE_DIR/$REQ_NAME |sed -e "s/%20/ /g")"
 	if [ ! -r "$REQ_FILE" ] && [ -r "$NETCACHE_DIR/$REQ_NAME" ] ; then
 		REQ_FILE="$NETCACHE_DIR/$REQ_NAME"
 	fi

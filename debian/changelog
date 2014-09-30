@@ -1,3 +1,9 @@
+aurex-cache (0.3) trusty; urgency=medium
+
+  * Manage filenames with spaces
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Tue, 30 Sep 2014 02:20:29 +0200
+
 aurex-cache (0.2) trusty; urgency=medium
 
   * Rebuild for aurex 14.04 trusty
