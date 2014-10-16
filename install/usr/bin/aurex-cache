@@ -20,15 +20,15 @@
 # --------
 
 usage(){
-	echo "$(basename "$0") {get|rm|file|clean} URL" >&2
-	echo "$(basename "$0") net-update" >&2
+	echo "$(basename "$0") {get|rm|file} URL" >&2
+	echo "$(basename "$0") {clean|net-update}" >&2
 	exit 1
 }
 
 CACHE_DIR="/var/cache/aurex-cache"
 NETCACHE_DIR="/datos/netcache/aurex-cache"
 
-if [ "$1" != "clean" ] ; then
+if [ "$1" != "clean" ] &&  [ "$1" != "net-update" ] ; then
 	[ "$1" -a "$2" ] || usage
 	REQ_URL="$2"
 	REQ_NAME="${REQ_URL##*/}"
