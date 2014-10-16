@@ -1,3 +1,9 @@
+aurex-cache (0.4) trusty; urgency=medium
+
+  * added net-update option
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Thu, 16 Oct 2014 17:56:58 +0200
+
 aurex-cache (0.3) trusty; urgency=medium
 
   * Manage filenames with spaces
