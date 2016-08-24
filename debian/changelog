@@ -1,3 +1,9 @@
+aurex-cache (0.8) xenial; urgency=medium
+
+  * Rebuild for xenial
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Wed, 24 Aug 2016 13:18:49 +0200
+
 aurex-cache (0.7) trusty; urgency=medium
 
   * Added support for flashplugin-installer
