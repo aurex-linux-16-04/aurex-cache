@@ -70,9 +70,11 @@ case "$ACTION" in
 		;;
 	net-update)
 		rsync -au --exclude='*.st'  "$CACHE_DIR/" "$NETCACHE_DIR/"
-		# sync oracle-java8-install cache dir also:
-		ORACLE8_CACHE="/var/cache/oracle-jdk8-installer"
-		[ ! -d "$ORACLE8_CACHE" ] || rsync -au --exclude='*.st' "$NETCACHE_DIR/"
+		# sync oracle-javaX-install cache dir also:
+		ORACLE_CACHE="/var/cache/oracle-jdk8-installer /var/cache/oracle-jdk9-installer /var/cache/oracle-jdk10-installer"
+		for d in $ORACLE_CACHE; do
+			[ ! -d "$d" ] || rsync -au --exclude='*.st' "$d" "$NETCACHE_DIR/"
+		done
 		;;
 	*)
 		usage

@@ -1,3 +1,9 @@
+aurex-cache (0.10) xenial; urgency=medium
+
+  * Added support for oracle-java10-installer
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Wed, 16 May 2018 16:24:20 +0200
+
 aurex-cache (0.9) xenial; urgency=medium
 
   * Added support for oracle-java9-installer
